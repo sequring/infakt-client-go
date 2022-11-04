@@ -18,3 +18,5 @@ decrypt_env: _pwd_prompt
 encrypt_env: _pwd_prompt
 	openssl cast5-cbc -e -in ${ENV_FILE} -out ${ENV_FILE}.cast5
 
+test:
+	go test ./... -v
