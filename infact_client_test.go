@@ -10,6 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const DEBUG_REQUEST bool = false
+
 func TestSomething(t *testing.T) {
 
 	// assert equality
@@ -20,10 +22,10 @@ func TestSomething(t *testing.T) {
 }
 
 func TestInfactClient(t *testing.T) {
-	var client *infact.Client
+	var client *infact.InFaktClient
 	token := os.Getenv("INFAKT_TOKEN")
 	var host string = "https://api.infakt.pl/v3"
-	client, _ = infact.NewClient(&host, &token)
+	client, _ = infact.NewInFaktClient(&host, &token)
 	if assert.NotNil(t, client) {
 		t.Log("Infact client initialized")
 	}
@@ -33,11 +35,10 @@ func TestInfactClient(t *testing.T) {
 	if err != nil {
 		t.Fatal("Error new Request", err)
 	}
-
-	body, err := client.DoRequest(req, &token)
+	//fmt.Println("Req:", req)
+	body, err := infact.DoRequest(client, req, host, &token, DEBUG_REQUEST)
 	if err != nil {
 		t.Fatal("Error request", err)
 	}
-
 	fmt.Println(string(body[:]))
 }
