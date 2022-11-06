@@ -6,19 +6,19 @@ import (
 	"os"
 	"testing"
 
-	infact "github.com/sequring/infakt-client-go"
+	infakt "github.com/sequring/infakt-client-go"
 	"github.com/stretchr/testify/assert"
 )
 
-const DebugRequest bool = false
+const DebugRequest bool = true
 
 var host string = "https://api.infakt.pl/v3"
 var token string
 
-func GetInfactClient() *infact.InFaktClient {
-	var client *infact.InFaktClient
+func GetInfactClient() *infakt.InFaktClient {
+	var client *infakt.InFaktClient
 	token = os.Getenv("INFAKT_TOKEN")
-	client, _ = infact.NewInFaktClient(&host, &token)
+	client, _ = infakt.NewInFaktClient(&host, &token)
 	return client
 }
 func TestSomething(t *testing.T) {
@@ -42,13 +42,10 @@ func TestInfactClient(t *testing.T) {
 		t.Fatal("Error new Request", err)
 	}
 
-	if DebugRequest {
-		fmt.Println("Req:", req)
-	}
-
-	body, err := infact.DoRequest(client, req, host, &token, DebugRequest)
+	body, err := infakt.DoRequest(client, req, host, &token, DebugRequest)
 	if err != nil {
 		t.Fatal("Error request", err)
 	}
-	fmt.Println(string(body[:]))
+
+	assert.NotNil(t, body)
 }
