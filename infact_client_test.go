@@ -1,4 +1,4 @@
-package infact_test
+package infakt_test
 
 import (
 	"fmt"
@@ -10,8 +10,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const DEBUG_REQUEST bool = false
+const DebugRequest bool = false
 
+var host string = "https://api.infakt.pl/v3"
+var token string
+
+func GetInfactClient() *infact.InFaktClient {
+	var client *infact.InFaktClient
+	token = os.Getenv("INFAKT_TOKEN")
+	client, _ = infact.NewInFaktClient(&host, &token)
+	return client
+}
 func TestSomething(t *testing.T) {
 
 	// assert equality
@@ -22,10 +31,7 @@ func TestSomething(t *testing.T) {
 }
 
 func TestInfactClient(t *testing.T) {
-	var client *infact.InFaktClient
-	token := os.Getenv("INFAKT_TOKEN")
-	var host string = "https://api.infakt.pl/v3"
-	client, _ = infact.NewInFaktClient(&host, &token)
+	client := GetInfactClient()
 	if assert.NotNil(t, client) {
 		t.Log("Infact client initialized")
 	}
@@ -35,8 +41,12 @@ func TestInfactClient(t *testing.T) {
 	if err != nil {
 		t.Fatal("Error new Request", err)
 	}
-	//fmt.Println("Req:", req)
-	body, err := infact.DoRequest(client, req, host, &token, DEBUG_REQUEST)
+
+	if DebugRequest {
+		fmt.Println("Req:", req)
+	}
+
+	body, err := infact.DoRequest(client, req, host, &token, DebugRequest)
 	if err != nil {
 		t.Fatal("Error request", err)
 	}

@@ -1,4 +1,13 @@
-package infact
+package infakt
+
+import "net/http"
+
+type InFaktClient struct {
+	InfaktEndpoint string
+	HTTPClient     *http.Client
+	Token          string
+	AuthHeader     string
+}
 
 type MetaInfo struct {
 	Count      int    `json:"count"`
