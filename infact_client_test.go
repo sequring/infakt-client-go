@@ -18,7 +18,7 @@ var token string
 func GetInfactClient() *infakt.InFaktClient {
 	var client *infakt.InFaktClient
 	token = os.Getenv("INFAKT_TOKEN")
-	client, _ = infakt.NewInFaktClient(&host, &token)
+	client, _ = infakt.NewInFaktClient(nil, &token)
 	return client
 }
 func TestSomething(t *testing.T) {
@@ -42,7 +42,7 @@ func TestInfactClient(t *testing.T) {
 		t.Fatal("Error new Request", err)
 	}
 
-	body, err := infakt.DoRequest(client, req, host, &token, DebugRequest)
+	body, err := infakt.DoRequest(client, req, DebugRequest)
 	if err != nil {
 		t.Fatal("Error request", err)
 	}

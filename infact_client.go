@@ -11,7 +11,7 @@ const InfaktEndpoint string = "https://api.infakt.pl/v3"
 const AuthHeader string = "X-inFakt-ApiKey"
 
 // NewInFaktClient -
-func NewInFaktClient(host, token *string) (*InFaktClient, error) {
+func NewInFaktClient(host *string, token *string) (*InFaktClient, error) {
 	c := InFaktClient{
 		HTTPClient:     &http.Client{Timeout: 10 * time.Second},
 		InfaktEndpoint: InfaktEndpoint,
@@ -46,7 +46,7 @@ func (c *InFaktClient) doRequest(req *http.Request) ([]byte, error) {
 	return body, err
 }
 
-func DoRequest(c *InFaktClient, req *http.Request, host string, authToken *string, debug bool) ([]byte, error) {
+func DoRequest(c *InFaktClient, req *http.Request, debug bool) ([]byte, error) {
 	if debug {
 		body, err := c.doRequest(req)
 		return body, err
