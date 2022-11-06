@@ -9,6 +9,6 @@ import (
 func TestClientModel(t *testing.T) {
 	client := GetInfactClient()
 	if assert.NotNil(t, client) {
-		t.Log("Infact client initialized")
+		t.Log("Infakt client initialized")
 	}
 }

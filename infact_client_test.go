@@ -33,7 +33,7 @@ func TestSomething(t *testing.T) {
 func TestInfactClient(t *testing.T) {
 	client := GetInfactClient()
 	if assert.NotNil(t, client) {
-		t.Log("Infact client initialized")
+		t.Log("Infakt client initialized")
 	}
 
 	assert.Equal(t, client.InfaktEndpoint, host)
