@@ -3,6 +3,7 @@ package infakt
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/brianvoe/gofakeit/v6"
 	"log"
 	"net/http"
 )
@@ -23,6 +24,7 @@ func (c *InFaktClient) GetCountAllClient() (int, error) {
  	return counter, nil
 }
 
+// GET /v3/clients.json
 func (c *InFaktClient) GetAllClient(offset int, limit int) ([]Client, error) {
 	//var clients []Client
 	if limit == 0 {
@@ -44,4 +46,47 @@ func (c *InFaktClient) GetAllClient(offset int, limit int) ([]Client, error) {
 		return nil, err
 	}
 	return res.Clients, nil
+}
+
+
+// GET /v3/clients/{id}.json
+func (c *InFaktClient) GetClient(id int) (Client, error) {
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/clients/%d.json", c.InfaktEndpoint, id), nil)
+	if err != nil {
+		log.Fatal("[client|GetClient] Error new Request", err)
+	}
+	body, err := c.doRequest(req)
+	if err != nil {
+		log.Fatal("[client|GetAllClient] Error request", err)
+	}
+	var res Client
+	err = json.Unmarshal(body, &res)
+	if err != nil {
+		return res, err
+	}
+	return res, nil
+}
+
+func (c *InFaktClient) NewClient() Client {
+	return Client{}
+}
+
+//POST /v3/clients.json
+func (c *InFaktClient) CreateClient() error {
+	return nil
+}
+
+
+func CreateTestClient() *Client{
+	fake := gofakeit.NewCrypto()
+	client := Client{}
+	client.CompanyName = fake.Company()
+	client.City = fake.City()
+	client.Street = fake.Street()
+	client.StreetNumber = fake.StreetNumber()
+	client.PostalCode = fake.Zip()
+	client.Country =  fake.Country()
+	client.SameForwardAddress = true
+	return &client
 }
