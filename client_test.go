@@ -5,13 +5,16 @@ import (
 	"fmt"
 	"math/big"
 
-	infakt "github.com/sequring/infakt-client-go"
 	"reflect"
 	"testing"
 
+	"github.com/brianvoe/gofakeit/v6"
+	infakt "github.com/sequring/infakt-client-go"
+
 	"github.com/stretchr/testify/assert"
 )
-const  id int = 20274698
+
+const id int = 20274698
 
 func TestClient_GetCountAllClient(t *testing.T) {
 	client := GetInfactClient()
@@ -25,7 +28,7 @@ func TestClient_GetCountAllClient(t *testing.T) {
 func TestClient_GetAllClient(t *testing.T) {
 	client := GetInfactClient()
 	var clients []infakt.Client
-	clients,err := client.GetAllClient(0,0)
+	clients, err := client.GetAllClient(0, 0)
 	if err != nil {
 		t.Fatal("err get all clients:", err)
 	}
@@ -34,7 +37,7 @@ func TestClient_GetAllClient(t *testing.T) {
 
 func TestClient_GetClient(t *testing.T) {
 	c := GetInfactClient()
-	client, err :=c.GetClient(id)
+	client, err := c.GetClient(id)
 	if err != nil {
 		t.Fatal("err get client by id:", err)
 	}
@@ -47,12 +50,23 @@ func TestClient_NewClient(t *testing.T) {
 	assert.Equal(t, fmt.Sprint(reflect.TypeOf(client)), "infakt.Client")
 }
 
+func CreateTestClient() *infakt.Client {
+	fake := gofakeit.NewCrypto()
+	c := GetInfactClient()
+	client := c.NewClient()
+	client.CompanyName = fake.Company()
+	client.City = fake.City()
+	client.Street = fake.Street()
+	client.StreetNumber = fake.StreetNumber()
+	client.PostalCode = fake.Zip()
+	client.Country = fake.Country()
+	client.SameForwardAddress = true
+	return &client
+}
+
 func TestClient_CreateClient(t *testing.T) {
 	//c := GetInfactClient()
 	fmt.Println(rand.Int(rand.Reader, big.NewInt(1000)))
-	client := infakt.CreateTestClient()
-	fmt.Println( client)
+	client := CreateTestClient()
+	fmt.Println(client)
 }
-
-
-
