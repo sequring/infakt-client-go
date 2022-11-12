@@ -3,7 +3,6 @@ package infakt
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/brianvoe/gofakeit/v6"
 	"log"
 	"net/http"
 )
@@ -21,7 +20,7 @@ func (c *InFaktClient) GetCountAllClient() (int, error) {
 		return 0, err
 	}
 	counter := res.MetaInfo.Count
- 	return counter, nil
+	return counter, nil
 }
 
 // GET /v3/clients.json
@@ -48,7 +47,6 @@ func (c *InFaktClient) GetAllClient(offset int, limit int) ([]Client, error) {
 	return res.Clients, nil
 }
 
-
 // GET /v3/clients/{id}.json
 func (c *InFaktClient) GetClient(id int) (Client, error) {
 
@@ -72,21 +70,7 @@ func (c *InFaktClient) NewClient() Client {
 	return Client{}
 }
 
-//POST /v3/clients.json
+// POST /v3/clients.json
 func (c *InFaktClient) CreateClient() error {
 	return nil
-}
-
-
-func CreateTestClient() *Client{
-	fake := gofakeit.NewCrypto()
-	client := Client{}
-	client.CompanyName = fake.Company()
-	client.City = fake.City()
-	client.Street = fake.Street()
-	client.StreetNumber = fake.StreetNumber()
-	client.PostalCode = fake.Zip()
-	client.Country =  fake.Country()
-	client.SameForwardAddress = true
-	return &client
 }
