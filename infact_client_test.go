@@ -32,20 +32,12 @@ func TestSomething(t *testing.T) {
 
 func TestInfactClient(t *testing.T) {
 	client := GetInfactClient()
-	if assert.NotNil(t, client) {
-		t.Log("Infakt client initialized")
-	}
-
+	assert.NotNil(t, client, "they should be not null")
 	assert.Equal(t, client.InfaktEndpoint, host)
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/clients.json", client.InfaktEndpoint), nil)
-	if err != nil {
-		t.Fatal("Error new Request", err)
-	}
-
+	assert.Nil(t, err, "Request should be not null ")
+	assert.NotNil(t, req)
 	body, err := infakt.DoRequest(client, req, DebugRequest)
-	if err != nil {
-		t.Fatal("Error request", err)
-	}
-
+	assert.Nil(t, err, "DoRequest should be not null ")
 	assert.NotNil(t, body)
 }

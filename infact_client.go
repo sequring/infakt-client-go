@@ -40,10 +40,14 @@ func (c *InFaktClient) doRequest(req *http.Request) ([]byte, error) {
 		return nil, err
 	}
 
-	if res.StatusCode != http.StatusOK {
+	switch res.StatusCode {
+	case http.StatusCreated, http.StatusOK, http.StatusNoContent:
+		return body, err
+
+	default:
 		return nil, fmt.Errorf("status: %d, body: %s", res.StatusCode, body)
 	}
-	return body, err
+
 }
 
 func DoRequest(c *InFaktClient, req *http.Request, debug bool) ([]byte, error) {

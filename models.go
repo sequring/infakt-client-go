@@ -17,7 +17,7 @@ type MetaInfo struct {
 }
 
 type Client struct {
-	ID                   int    `json:"id"`
+	ID                   int    `json:"id,omitempty"`
 	CompanyName          string `json:"company_name"`
 	Street               string `json:"street,omitempty"`
 	StreetNumber         string `json:"street_number,omitempty"`
@@ -47,4 +47,8 @@ type Client struct {
 type ClientRes struct {
 	MetaInfo MetaInfo `json:"metainfo"`
 	Clients  []Client `json:"entities,omitempty"`
+}
+
+type NewClientReq struct {
+	Client Client `json:"client"`
 }
