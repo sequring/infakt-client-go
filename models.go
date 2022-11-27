@@ -41,7 +41,7 @@ type Client struct {
 	SameForwardAddress   bool   `json:"same_forward_address"`
 	FirstName            string `json:"first_name,omitempty"`
 	LastName             string `json:"last_name,omitempty"`
-	BusinessActivityKind string `json:"business_activity_kind,omitempty"`
+	BusinessActivityKind string `json:"business_activity_kind"`
 }
 
 type ClientRes struct {

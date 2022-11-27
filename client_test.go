@@ -112,7 +112,7 @@ func TestClient_CreateClient(t *testing.T) {
 	httpmock.RegisterResponder(
 		"POST",
 		"https://api.infakt.pl/v3/clients.json",
-		httpmock.NewStringResponder(201, "ok"),
+		httpmock.NewStringResponder(201, `{"id":20652124,"company_name":"Avvo","street":null,"street_number":null,"flat_number":null,"city":null,"country":"US","postal_code":null,"nip":null,"phone_number":null,"web_site":"","email":null,"note":"","receiver":"","mailing_company_name":"","mailing_street":"","mailing_city":"","mailing_postal_code":"","days_to_payment":"","payment_method":"","invoice_note":"","same_forward_address":true,"first_name":null,"last_name":null,"business_activity_kind":"other_business"}`),
 	)
 	c := GetInfactClient()
 	err := c.CreateClient(*newClient)

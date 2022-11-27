@@ -28,6 +28,7 @@ func NewInFaktClient(host *string, token *string) (*InFaktClient, error) {
 
 func (c *InFaktClient) doRequest(req *http.Request) ([]byte, error) {
 	token := c.Token
+	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set(c.AuthHeader, token)
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
