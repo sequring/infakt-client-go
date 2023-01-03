@@ -11,10 +11,13 @@ import (
 func (c *InFaktClient) GetCountAllClient() (int, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/clients.json%s", c.InfaktEndpoint, ""), nil)
 	if err != nil {
-		log.Fatal("[client|GetAllClient] Error new Request", err)
+		return 0, err
 	}
 
 	body, err := c.doRequest(req)
+	if err != nil {
+		return 0, err
+	}
 	var res ClientRes
 	err = json.Unmarshal(body, &res)
 	if err != nil {
@@ -33,12 +36,12 @@ func (c *InFaktClient) GetAllClient(offset int, limit int) ([]Client, error) {
 	pager := fmt.Sprintf("?offset=%d&limit=%d", offset, limit)
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/clients.json%s", c.InfaktEndpoint, pager), nil)
 	if err != nil {
-		log.Fatal("[client|GetAllClient] Error new Request", err)
+		return nil, err
 	}
 
 	body, err := c.doRequest(req)
 	if err != nil {
-		log.Fatal("[client|GetAllClient] Error request", err)
+		return nil, err
 	}
 	var res ClientRes
 	err = json.Unmarshal(body, &res)
@@ -76,21 +79,18 @@ func (c *InFaktClient) CreateClient(client Client) error {
 	clientReq := NewClientReq{Client: client}
 	newClient, err := json.MarshalIndent(clientReq, "", " ")
 	if err != nil {
-		log.Fatal("[client|CreateClient] Error new Request ", err)
+		return err
 	}
 	bodyReader := bytes.NewReader(newClient)
 	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("%s/clients.json", c.InfaktEndpoint), bodyReader)
 	if err != nil {
-		log.Fatal("[client|CreateClient] Error new Request ", err)
+		return err
 	}
-	body, err := c.doRequest(req)
+	_, err = c.doRequest(req)
 
 	if err != nil {
-		//		file, _ := json.MarshalIndent(clientReq, "", " ")
-		//		_ = ioutil.WriteFile("createNewClient.json", file, 0644)
-		log.Fatal("[client|CreateClient] Error request ", string(newClient[:]), err)
+		return err
 	}
-	fmt.Println("body ", string(body[:]))
 	return nil
 }
 
@@ -99,19 +99,18 @@ func (c *InFaktClient) UpdateClient(client Client) error {
 	clientReq := NewClientReq{Client: client}
 	newClient, err := json.Marshal(clientReq)
 	if err != nil {
-		log.Fatal("[client|UpdateClient] Error new Request ", err)
+		return err
 	}
 	bodyReader := bytes.NewReader(newClient)
 	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s/clients/%d.json", c.InfaktEndpoint, client.ID), bodyReader)
 	if err != nil {
-		log.Fatal("[client|UpdateClient] Error new Request ", err)
+		return err
 	}
-	body, err := c.doRequest(req)
+	_, err = c.doRequest(req)
 
 	if err != nil {
-		log.Fatal("[client|UpdateClient] Error request ", err)
+		return err
 	}
-	fmt.Println("body ", string(body[:]))
 	return nil
 }
 
@@ -119,13 +118,12 @@ func (c *InFaktClient) UpdateClient(client Client) error {
 func (c *InFaktClient) DeleteClient(client Client) error {
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s/clients/%d.json", c.InfaktEndpoint, client.ID), nil)
 	if err != nil {
-		log.Fatal("[client|DeleteClient] Error new Request ", err)
+		return err
 	}
-	body, err := c.doRequest(req)
+	_, err = c.doRequest(req)
 
 	if err != nil {
-		log.Fatal("[client|DeleteClient] Error request ", err)
+		return err
 	}
-	fmt.Println("body ", string(body[:]))
 	return nil
 }
